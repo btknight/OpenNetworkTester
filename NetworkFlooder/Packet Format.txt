@@ -1,0 +1,31 @@
+﻿The Flooder object creates one or more FlooderThread objects, which send traffic to a target IP.  Each FlooderThread uses its own UDP socket to send datagrams to the host.
+
+The data packet is always sent as a UDP datagram to the target IP.  Destination port should be configurable by the user.
+
+The format of the data packet sent is as follows:
+
+                    1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 3 3
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                             |
++                        Sequence Number                      +
+|                                                             |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                             |
++                          Timestamp                          +
+|                                                             |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                             |
++                                                             +
+|                         Test Pattern                        |
+                               .
+|                              .                              |
+                               .
+|                              .                              |
+
+
+Sequence Number: a 64-bit number, starting at zero, indicating the sequence number of this particular packet
+
+Timestamp: a 64-bit value indicating when this packet was transmitted.  In the .NET implementation, the value of DateTime.Ticks is used.
+
+Test Pattern: a repeating pattern of a single octet, 0x69, that is used to pad the packet to the desired length.

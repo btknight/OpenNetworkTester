@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2012 for Windows Desktop
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ONT", "ONT\ONT.csproj", "{CF8879FD-D572-4AB2-BE7E-14A896078469}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkFlooder", "NetworkFlooder\NetworkFlooder.csproj", "{79F782FA-4967-43F8-9F46-F188FCC0F01E}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs26
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = NetworkFlooder\\NetworkFlooder.csproj
+		SccProjectName1 = NetworkFlooder
+		SccLocalPath1 = NetworkFlooder
+		SccProjectUniqueName2 = ONT\\ONT.csproj
+		SccProjectName2 = ONT
+		SccLocalPath2 = ONT
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CF8879FD-D572-4AB2-BE7E-14A896078469}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF8879FD-D572-4AB2-BE7E-14A896078469}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF8879FD-D572-4AB2-BE7E-14A896078469}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF8879FD-D572-4AB2-BE7E-14A896078469}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79F782FA-4967-43F8-9F46-F188FCC0F01E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79F782FA-4967-43F8-9F46-F188FCC0F01E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79F782FA-4967-43F8-9F46-F188FCC0F01E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79F782FA-4967-43F8-9F46-F188FCC0F01E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

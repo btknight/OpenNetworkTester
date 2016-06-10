@@ -1,0 +1,187 @@
+﻿<Window x:Class="ONT.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:ONT"
+        Title="Open Network Tester" Height="600" Width="780">
+    <Window.Resources>
+        <x:Array x:Key="WANFrameTypes" Type="{x:Type local:WANFrameType}">
+            <local:WANFrameType Media="Ethernet" Size="26"/>
+            <local:WANFrameType Media="Ethernet w/ dot1Q" Size="30"/>
+            <local:WANFrameType Media="Ethernet w/ QinQ" Size="34"/>
+            <local:WANFrameType Media="HDLC" Size="7"/>
+            <local:WANFrameType Media="PPP" Size="9"/>
+            <local:WANFrameType Media="Frame Relay" Size="6"/>
+            <local:WANFrameType Media="PPPoFR" Size="13"/>
+        </x:Array>
+        <local:UnitConverter x:Key="BytesToBits" Multiplier="8"/>
+        <local:UnitConverter x:Key="OnesToMilli" Multiplier="1000"/>
+        <local:BWSliderConverter x:Key="BWSliderConverter"/>
+        <local:NumberRule x:Key="BandwidthRule" Min="0" Max="125000000"/>
+        <local:NumberRule x:Key="PacketSizeRule" Min="64" Max="9000"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="72"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="165"/>
+            <RowDefinition/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="7*"/>
+                <RowDefinition Height="9*"/>
+                <RowDefinition Height="9*"/>
+                <RowDefinition Height="9*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="116"/>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Slider Grid.Row="1" VerticalAlignment="Center" Grid.Column="3" Maximum="4" Value="{Binding BandwidthOctets, Converter={StaticResource BWSliderConverter}}" TickPlacement="TopLeft" Ticks="{Binding BandwidthTicks}" Margin="18,11,18,10">
+                <Slider.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <LinearGradientBrush.RelativeTransform>
+                            <TransformGroup>
+                                <ScaleTransform CenterY="0.5" CenterX="0.5"/>
+                                <SkewTransform CenterY="0.5" CenterX="0.5"/>
+                                <RotateTransform Angle="-90" CenterY="0.5" CenterX="0.5"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </LinearGradientBrush.RelativeTransform>
+                        <GradientStop Color="#FF30FF30"/>
+                        <GradientStop Color="#FFC00000" Offset="1"/>
+                    </LinearGradientBrush>
+                </Slider.Background>
+            </Slider>
+            <Slider Grid.Row="2" VerticalAlignment="Center" Minimum="64" Maximum="{Binding MaxMtu}" TickPlacement="BottomRight" Grid.Column="3" Value="{Binding PacketSizeOctets}" Ticks="{Binding PacketSizeTicks}" Foreground="Black" Margin="18,10,18,11"/>
+            <TextBlock Grid.Row="1" TextWrapping="Wrap" Text="Bandwidth" VerticalAlignment="Center" Height="18" Margin="10,16,10,10"/>
+            <TextBlock Grid.Row="2" TextWrapping="Wrap" Text="IP Packet Size" VerticalAlignment="Center" Height="18" Margin="10,16,10,10"/>
+            <TextBlock Grid.Row="3" TextWrapping="Wrap" Text="WAN Frame Type" VerticalAlignment="Center" Height="18" Margin="10,16,10,10"/>
+            <TextBlock Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Bits per second" VerticalAlignment="Center" Height="16" Margin="20,9,18,9" Width="82"/>
+            <TextBlock Grid.Column="2" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Octets per second" VerticalAlignment="Center" Height="16" Margin="12,9" Width="96"/>
+            <!-- 
+            <TextBox Grid.Column="1" HorizontalAlignment="Center" Height="23" Grid.Row="1" TextWrapping="Wrap" Text="{Binding BandwidthOctets, Converter={StaticResource BytesToBits}}" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="110"/>
+            <TextBox Grid.Column="2" HorizontalAlignment="Center" Height="23" Grid.Row="1" TextWrapping="Wrap" Text="{Binding BandwidthOctets}" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="110"/>
+            <TextBox Grid.Column="2" HorizontalAlignment="Center" Height="23" Grid.Row="2" TextWrapping="Wrap" Text="{Binding PacketSizeOctets}" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="110"/>
+            <TextBox Grid.Column="1" HorizontalAlignment="Center" Height="23" Grid.Row="2" TextWrapping="Wrap" Text="{Binding PacketSizeOctets, Converter={StaticResource BytesToBits}}" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="110"/>
+            -->
+            <TextBox Grid.Column="1" HorizontalAlignment="Center" Height="23" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="110">
+                <TextBox.Text>
+                    <Binding Path="BandwidthOctets" Converter="{StaticResource BytesToBits}">
+                        <Binding.ValidationRules>
+                            <local:NumberRule Min="0" Max="1000000000"/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <TextBox Grid.Column="2" HorizontalAlignment="Center" Height="23" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="110">
+                <TextBox.Text>
+                    <Binding Path="BandwidthOctets">
+                        <Binding.ValidationRules>
+                            <local:NumberRule Min="0" Max="125000000"/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <TextBox Grid.Column="2" HorizontalAlignment="Center" Height="23" Grid.Row="2" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="110">
+                <TextBox.Text>
+                    <Binding Path="PacketSizeOctets">
+                        <Binding.ValidationRules>
+                            <local:NumberRule Min="64" Max="9000"/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <TextBox Grid.Column="1" HorizontalAlignment="Center" Height="23" Grid.Row="2" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="110">
+                <TextBox.Text>
+                    <Binding Path="PacketSizeOctets" Converter="{StaticResource BytesToBits}">
+                        <Binding.ValidationRules>
+                            <local:NumberRule Min="512" Max="72000"/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <ComboBox x:Name="ComboWANFrameType" Grid.Column="1" HorizontalAlignment="Center" Margin="5,0,5,0" Grid.Row="3" VerticalAlignment="Center" Width="110"
+                      ItemsSource="{StaticResource WANFrameTypes}" DisplayMemberPath="Media" SelectedItem="{Binding SelectedWANFrameType}" SelectedIndex="0"/>
+            <CheckBox x:Name="ComputeBw" Content="Compute bandwidth usage below based on WAN frame type" Grid.Column="3" Margin="18,0,18,0" Grid.Row="3" VerticalAlignment="Center" IsChecked="{Binding UseWANFrameBwCalc}"/>
+            <TextBlock x:Name="WANFrameSize" Grid.Row="4" Grid.Column="2" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" Text="{Binding WANFrameSize, StringFormat={}{0} octets}"/>
+        </Grid>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="90"/>
+                <ColumnDefinition Width="110"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="28"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBox x:Name="Target" Margin="10,10,3,0" TextWrapping="Wrap" Text="{Binding Target}" VerticalAlignment="Top" Height="26" Grid.Row="1" MouseDoubleClick="Target_MouseDoubleClick"/>
+            <TextBox Height="26" Margin="2,10,0,0" TextWrapping="Wrap" Text="{Binding DestPort}" VerticalAlignment="Top" Grid.Column="2" Grid.Row="1"/>
+            <TextBlock Margin="2,10,3,0" TextWrapping="Wrap" Text=":" VerticalAlignment="Top" FontWeight="Bold" FontSize="18" Grid.Column="1" Grid.Row="1" Height="24"/>
+            <TextBlock Grid.Column="2" HorizontalAlignment="Left" Margin="2,0,0,0" TextWrapping="Wrap" Text="Destination Port" VerticalAlignment="Bottom" Height="16" Width="86"/>
+            <TextBlock HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" Text="Target IP / Hostname" VerticalAlignment="Bottom" Width="116" Height="16"/>
+            <Button Command="{Binding GoCommand}" Content="{Binding RunString}" IsEnabled="{Binding ReadyToRun}" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="86" Height="26" Grid.Column="3" Grid.Row="1"/>
+        </Grid>
+        <StackPanel Height="25" Margin="10,0" Grid.Row="1" VerticalAlignment="Center" Orientation="Horizontal">
+            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding TargetResolveResult}" VerticalAlignment="Center" Margin="0,0,20,0" FontStyle="Italic"/>
+            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding TargetPingResult}" VerticalAlignment="Center" Margin="0,0,20,0" Foreground="#FF0C00FF"/>
+        </StackPanel>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="257" Margin="10,10,0,0" Grid.Row="3" VerticalAlignment="Top" Width="752">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="121*"/>
+                    <ColumnDefinition Width="200*"/>
+                    <ColumnDefinition Width="200*"/>
+                    <ColumnDefinition Width="321*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="22"/>
+                    <RowDefinition Height="32"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="82*"/>
+                </Grid.RowDefinitions>
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Test Progress" VerticalAlignment="Top" Width="121" FontStyle="Italic" FontWeight="Bold" FontSize="14" Height="19" Grid.ColumnSpan="2"/>
+                <TextBlock Grid.Column="0" HorizontalAlignment="Left" Grid.Row="2" TextWrapping="Wrap" Text="Sent" VerticalAlignment="Center" Margin="10,12,0,12"/>
+                <TextBlock Grid.Column="0" HorizontalAlignment="Left" Grid.Row="3" TextWrapping="Wrap" Text="Received" VerticalAlignment="Center" Margin="10,12,0,12"/>
+                <TextBlock Grid.Column="0" HorizontalAlignment="Left" Grid.Row="5" TextWrapping="Wrap" Text="Packets Lost" VerticalAlignment="Center" Margin="10,12,0,12"/>
+                <TextBlock Grid.Column="1" HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" Text="Immediate" VerticalAlignment="Center" Height="16" Width="57" FontStyle="Italic"/>
+                <TextBlock Grid.Column="2" HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" Text="5 sec average" VerticalAlignment="Center" Height="16" Width="72" FontStyle="Italic"/>
+                <TextBlock Grid.Column="1" HorizontalAlignment="Right" Grid.Row="2" TextWrapping="Wrap" Text="{Binding LatestResult.OctetsSentPerSecond, Converter={StaticResource BytesToBits}, StringFormat={}{0:#,#} b/s}" VerticalAlignment="Center" FontFamily="Courier New" Margin="0,0,20,0" />
+                <TextBlock Grid.Column="1" HorizontalAlignment="Right" Grid.Row="3" TextWrapping="Wrap" Text="{Binding LatestResult.OctetsReceivedPerSecond, Converter={StaticResource BytesToBits}, StringFormat={}{0:#,#} b/s}" VerticalAlignment="Center" FontFamily="Courier New" Margin="0,0,20,0" />
+                <TextBlock Grid.Column="2" HorizontalAlignment="Right" Grid.Row="2" TextWrapping="Wrap" Text="{Binding HistoryResult.OctetsSentPerSecond, Converter={StaticResource BytesToBits}, StringFormat={}{0:#,#} b/s}" VerticalAlignment="Center" FontFamily="Courier New" Margin="0,0,20,0" />
+                <TextBlock Grid.Column="2" HorizontalAlignment="Right" Grid.Row="3" TextWrapping="Wrap" Text="{Binding HistoryResult.OctetsReceivedPerSecond, Converter={StaticResource BytesToBits}, StringFormat={}{0:#,#} b/s}" VerticalAlignment="Center" FontFamily="Courier New" Margin="0,0,20,0" />
+                <TextBlock Grid.Column="2" HorizontalAlignment="Right" Grid.Row="4" TextWrapping="Wrap" Text="{Binding HistoryResult.Latency, Converter={StaticResource OnesToMilli}, StringFormat={}{0:0.###} msec}" VerticalAlignment="Center" FontFamily="Courier New" Margin="0,0,20,0" />
+                <TextBlock Grid.Column="2" HorizontalAlignment="Right" Grid.Row="5" TextWrapping="Wrap" Text="{Binding HistoryResult.PacketsLost, StringFormat={}{0:#,0} pkts}" VerticalAlignment="Center" FontFamily="Courier New" Margin="0,0,20,0" />
+                <TextBlock x:Name="TestRunning" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Test Running" VerticalAlignment="Center" Grid.Row="1" Foreground="Red" Visibility="{Binding FlooderIsRunning}" FontWeight="Bold" FontStyle="Italic">
+                    <TextBlock.Triggers>
+                        <EventTrigger RoutedEvent="TextBlock.Loaded">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation
+                                        Storyboard.TargetName="TestRunning"
+                                        Storyboard.TargetProperty="Opacity"
+                                        From="1.0" To="0.25" Duration="0:0:1"
+                                        AutoReverse="True" RepeatBehavior="Forever" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </TextBlock.Triggers>
+                </TextBlock>
+                <TextBlock HorizontalAlignment="Left" Grid.Row="4" TextWrapping="Wrap" Text="Avg Latency" VerticalAlignment="Center" Margin="10,0,0,0" Height="16" Width="72"/>
+            </Grid>
+        </Border>
+        <TextBlock HorizontalAlignment="Left" Height="20" Margin="10,0,0,0" Grid.Row="4" TextWrapping="NoWrap" VerticalAlignment="Bottom" FontStyle="Italic">
+            <Hyperlink NavigateUri="http://opennetworktester.codeplex.com/" RequestNavigate="Hyperlink_RequestNavigate">
+                http://OpenNetworkTester.codeplex.com/
+            </Hyperlink>
+        </TextBlock>
+    </Grid>
+</Window>
